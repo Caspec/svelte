@@ -1,3 +1,4 @@
+import axios from "axios";
 import { writable } from "svelte/store";
 
 export type User = {
@@ -7,7 +8,7 @@ export type User = {
 };
 
 function createUserStore() {
-  const { subscribe, set, update } = writable<User[]>([]);
+  const { subscribe, set } = writable<User[]>([]);
   const isLoading = writable(true);
   const error = writable<string | null>(null);
 
@@ -15,12 +16,12 @@ function createUserStore() {
     isLoading.set(true);
     error.set(null);
     try {
-      const res = await fetch("https://jsonplaceholder.typicode.com/users");
-      if (!res.ok) throw new Error("Failed to fetch users");
-      const data = await res.json();
-      set(data);
+      const response = await axios.get<User[]>(
+        "https://jsonplaceholder.typicode.com/users"
+      );
+      set(response.data);
     } catch (err) {
-      error.set((err as Error).message);
+      error.set(err instanceof Error ? err.message : "Unknown error");
     } finally {
       isLoading.set(false);
     }
