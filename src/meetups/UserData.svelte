@@ -8,6 +8,10 @@
 	onMount(() => {
 		fetchUsers();
 	});
+
+	function onUserUpdated(event) {
+		console.log("user id:", event.detail);
+	}
 </script>
 
 <h2>Brugere</h2>
@@ -18,7 +22,7 @@
 	<p style="color: red">Fejl: {$error}</p>
 {:else}
 	{#each $userStore as user}
-		<UserDataItem userName={user.name} userEmail={user.email} />
+		<UserDataItem userId={user.id} userName={user.name} userEmail={user.email} on:dispatchUser={onUserUpdated} />
 	{/each}
 {/if}
 
