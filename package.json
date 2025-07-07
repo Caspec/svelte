@@ -4,12 +4,16 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "start": "sirv public"
+    "start": "sirv public",
+    "test:e2e": "playwright test",
+    "test:firefox": "playwright test --project=firefox"
   },
   "devDependencies": {
+    "@playwright/test": "^1.53.2",
     "@rollup/plugin-commonjs": "^16.0.0",
     "@rollup/plugin-node-resolve": "^10.0.0",
     "@rollup/plugin-typescript": "^12.1.4",
+    "playwright": "^1.53.2",
     "rollup": "^2.3.4",
     "rollup-plugin-css-only": "^3.0.0",
     "rollup-plugin-livereload": "^2.0.0",
