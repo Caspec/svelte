@@ -1,5 +1,5 @@
 import axios from "axios";
-import { writable } from "svelte/store";
+import { writable, readable, derived } from "svelte/store";
 
 export type User = {
   id: number;
@@ -11,6 +11,8 @@ function createUserStore() {
   const { subscribe, set } = writable<User[]>([]);
   const isLoading = writable(true);
   const error = writable<string | null>(null);
+  const price = writable(100);
+  const quantity = writable(2);
 
   async function fetchUsers() {
     isLoading.set(true);
@@ -27,11 +29,31 @@ function createUserStore() {
     }
   }
 
+  const userTime = readable<Date>(new Date(), (set) => {
+    const interval = setInterval(() => {
+      set(new Date());
+    }, 1000);
+
+    return () => clearInterval(interval);
+  });
+
+  const total = derived(
+    [price, quantity],
+    ([$price, $quantity]) => $price * $quantity
+  );
+
+  const totalWithTax = derived(total, ($total) => $total * 1.25);
+
   return {
     subscribe,
     fetchUsers,
     isLoading,
     error,
+    userTime,
+    price,
+    quantity,
+    total,
+    totalWithTax,
   };
 }
 
