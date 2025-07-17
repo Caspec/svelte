@@ -3,7 +3,7 @@
 	import { userStore } from '../stores/userStore';
 	import UserDataItem from './UserDataItem.svelte';
 
-	const { subscribe, fetchUsers, isLoading, error } = userStore;
+	const { subscribe, fetchUsers, userTime, price, quantity, total, totalWithTax, isLoading, error } = userStore;
 
 	onMount(() => {
 		fetchUsers();
@@ -13,6 +13,19 @@
 		console.log("user id:", event.detail);
 	}
 </script>
+
+<p>Klokken er: {$userTime.toLocaleTimeString()}</p>
+
+<label>
+  Pris: <input type="number" bind:value={$price} />
+</label>
+<br />
+<label>
+  Antal: <input type="number" bind:value={$quantity} />
+</label>
+
+<p>Total uden moms: {$total} kr</p>
+<p>Total med moms: {$totalWithTax.toFixed(2)} kr</p>
 
 <h2>Brugere</h2>
 
